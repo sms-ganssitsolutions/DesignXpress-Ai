@@ -1,0 +1,42 @@
+# Exact Commands to Run (on a machine with gh authenticated + write access)
+
+# ==============================================
+# RECOMMENDED: Create as DRAFT first (for review)
+# ==============================================
+gh release create v1.0-documentation-complete `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --title "v1.0-documentation-complete" `
+  --notes-file RELEASE_v1.0-documentation-complete.md `
+  --draft
+
+# ==============================================
+# NON-DRAFT VERSION (publishes immediately)
+# ==============================================
+gh release create v1.0-documentation-complete `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --title "v1.0-documentation-complete" `
+  --notes-file RELEASE_v1.0-documentation-complete.md
+
+# ==============================================
+# Alternative: Use short one-paragraph description inline
+# ==============================================
+
+# Non-draft with short description:
+gh release create v1.0-documentation-complete `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --title "v1.0-documentation-complete" `
+  --notes "v1.0-documentation-complete delivers a complete, professional documentation suite for DesignXpress AI Story Video Studio. This release introduces a central Documentation Hub, a dedicated diagrams collection with rich Mermaid visualizations (AI flows, media pipeline, export queue, data models, and collaboration), multiple new specialized guides (workflows, FAQ, testing, performance, security, and more), and a single-file consolidated guide optimized for PDF export — significantly improving discoverability and usability across the entire project."
+
+# Draft with short description:
+# gh release create v1.0-documentation-complete `
+#   --repo sms-ganssitsolutions/DesignXpress-Ai `
+#   --title "v1.0-documentation-complete" `
+#   --notes "v1.0-documentation-complete delivers a complete, professional documentation suite for DesignXpress AI Story Video Studio. This release introduces a central Documentation Hub, a dedicated diagrams collection with rich Mermaid visualizations (AI flows, media pipeline, export queue, data models, and collaboration), multiple new specialized guides (workflows, FAQ, testing, performance, security, and more), and a single-file consolidated guide optimized for PDF export — significantly improving discoverability and usability across the entire project." `
+#   --draft
+
+# ==============================================
+# Notes
+# ==============================================
+# - Make sure you are in the project directory or use --repo
+# - The file RELEASE_v1.0-documentation-complete.md must exist in the current directory
+# - You must have `gh` CLI installed and authenticated with write access to the repo
