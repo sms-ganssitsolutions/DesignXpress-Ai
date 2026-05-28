@@ -5,11 +5,23 @@
 
 *Version 1.0 – Comprehensive Documentation*
 
+> **Note**: This is the single-file consolidated version of the documentation, ideal for offline reading or PDF export.
+>
+> For the best browsing experience with navigation, visit the **[Documentation Hub](docs/index.md)**.
+
 ---
 
-**This document is an aggregated guide compiled from the project's full documentation set.**
+## Quick Navigation
 
-For the most up-to-date individual documents, visit the [Documentation Hub](../docs/index.md).
+- [Project Overview](#project-overview)
+- [Getting Started](#getting-started-windows-11)
+- [Architecture & Diagrams](#architecture--system-design)
+- [Key Features & Guides](#specialized-documentation)
+- [Deployment](#deployment)
+- [Development & Contributing](#development--contributing)
+- [Releases](#releases)
+
+---
 
 ---
 

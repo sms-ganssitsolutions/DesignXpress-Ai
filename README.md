@@ -166,9 +166,13 @@ All documentation is organized in the [Documentation Hub](./docs/index.md).
 **For a single-file version** (ideal for printing or PDF export), see:
 - [Complete User & Developer Guide](./docs/DesignXpress_AI_Complete_User_and_Developer_Guide.md)
 
-Additional specialized docs:
-- [Diagrams](./docs/diagrams.md)
-- [Workflows](./docs/workflows.md)
+### Releases
+- Latest: **[v1.0-documentation-complete](./RELEASE_NOTES.md)** (Comprehensive Documentation Overhaul)
+- See full release history: [docs/releases.md](./docs/releases.md)
+
+### Additional Specialized Documentation
+- [Diagrams](./docs/diagrams.md) — Architecture & flow visualizations
+- [Workflows](./docs/workflows.md) — Common user & developer flows
 - [FAQ](./docs/faq.md)
 - [Testing](./docs/testing.md)
 - [Performance](./docs/performance.md)

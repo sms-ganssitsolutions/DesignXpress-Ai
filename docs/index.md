@@ -39,6 +39,7 @@ This hub provides easy navigation to all documentation.
 ### Project Management
 - [Roadmap](roadmap.md) — Current state and future development plans
 - [Contributing Guide](contributing.md) — How to contribute to the project
+- [Releases](releases.md) — Release history and notes
 
 ### Consolidated Guide
 - [Complete User & Developer Guide](DesignXpress_AI_Complete_User_and_Developer_Guide.md) — Single-file aggregation of all major documentation (recommended for PDF export)
