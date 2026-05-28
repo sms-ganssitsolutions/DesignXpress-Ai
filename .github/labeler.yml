@@ -1,0 +1,25 @@
+# Labeler configuration
+# https://github.com/actions/labeler
+
+frontend:
+- 'frontend/**'
+
+backend:
+- 'backend/**'
+
+documentation:
+- 'docs/**'
+- '**/*.md'
+- 'README.md'
+- 'TEMPLATE.md'
+
+ci-cd:
+- '.github/workflows/**'
+- '.github/dependabot.yml'
+
+docker:
+- '**/Dockerfile*'
+- 'docker-compose*.yml'
+
+scripts:
+- 'scripts/**'

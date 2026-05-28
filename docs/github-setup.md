@@ -4,31 +4,96 @@ This guide explains the recommended GitHub settings when using this repository a
 
 After generating a new repository from this template, we strongly recommend configuring the following for a professional development experience.
 
-## 1. Branch Protection Rules (Highly Recommended)
+## 1. Branch Protection using Repository Rulesets (Recommended)
 
-Go to your repository → **Settings** → **Branches** → **Branch protection rules** → Add rule for `master` (or `main`).
+GitHub now recommends **Repository Rulesets** over the older "Branch protection rules". Rulesets are more powerful and flexible.
 
-### Recommended Settings for `master` / `main`:
+### Why Use Rulesets?
+- Work on all branches (including future ones via patterns)
+- Support advanced rules like **Required linear history**, **Required signatures**, and more
+- Can be applied at organization level
+- Better audit logging
 
-- **Require a pull request before merging**
-  - Require approvals: **1** (increase for teams)
-  - Dismiss stale pull request approvals when new commits are pushed: **Enabled**
-  - Require review from Code Owners: **Enabled** (works with `.github/CODEOWNERS`)
+### Recommended Ruleset for `main` / `master`
 
-- **Require status checks to pass before merging**
-  - Require branches to be up to date before merging: **Enabled**
-  - Add these status checks (after first CI run):
-    - `Frontend (Next.js)`
-    - `Backend (Express + TypeScript)`
-    - `Docker Build Check` (optional)
+This template includes a ready-to-use ruleset definition at:
 
-- **Require conversation resolution before merging**: **Enabled**
+**`.github/rulesets/main-branch-protection.json`**
 
-- **Require signed commits**: Optional (good for security-conscious teams)
+It includes:
+- No deletions
+- No force pushes
+- Require pull request with at least 1 approval
+- Require Code Owner review
+- Require status checks from our CI workflows
+- Require linear history
+- Require signed commits
 
-- **Do not allow bypassing the above settings**: **Enabled** (for admins too, if desired)
+### How to Apply the Ruleset (Recommended)
 
-- **Restrict who can push to matching branches**: Optional (recommended for teams)
+The template now supports a **configurable** ruleset system.
+
+#### Option A: Using the Config + Script (Easiest & Recommended)
+
+1. Edit `.github/rulesets/ruleset-config.json` to customize:
+   - Number of required approvals
+   - Which status checks are required
+   - Whether to require linear history, signed commits, etc.
+
+2. Run the script:
+
+   **Windows:**
+   ```powershell
+   .\scripts\apply-branch-rulesets.ps1 -Owner yourusername -Repo your-repo-name
+   ```
+
+   **macOS / Linux:**
+   ```bash
+   ./scripts/apply-branch-rulesets.sh yourusername your-repo-name
+   ```
+
+#### Option B: Using the Static JSON (Simple)
+```bash
+gh api --method POST \
+  -H "Accept: application/vnd.github+json" \
+  /repos/OWNER/REPO/rulesets \
+  --input .github/rulesets/main-branch-protection.json
+```
+
+#### Option C: Manual via GitHub UI
+Go to **Settings → Rules → Rulesets** and create a new branch ruleset with your desired protections.
+
+After applying, you can view and manage all rulesets at:
+`https://github.com/OWNER/REPO/settings/rules`
+
+### Important Status Checks to Require
+
+Make sure these checks from `.github/workflows/ci.yml` are required:
+- `Frontend (Next.js)`
+- `Backend (Express + TypeScript)`
+- `Docker Build Check`
+- `Security Scan` (from Trivy)
+
+These come from the CI workflows included in this template.
+
+---
+
+## Organization-Level Rulesets (Advanced)
+
+If you are in a GitHub organization, you can apply rulesets at the **organization level** so they automatically apply to all repositories (or specific ones).
+
+### Example: Create an Org-Level Ruleset
+
+1. Go to your organization → **Settings** → **Rules** → **Rulesets**
+2. Click **"New ruleset"** → **"New organization ruleset"**
+3. Use the same rules as in `.github/rulesets/main-branch-protection.json`
+4. Under **Repositories**, choose:
+   - All repositories, or
+   - Only repositories matching a pattern (e.g. `*-ai-*`)
+
+This is especially powerful for companies that want consistent branch protection across many repositories.
+
+You can also manage org-level rulesets via the GitHub API or `gh` CLI.
 
 ## 2. CODEOWNERS
 
@@ -69,13 +134,21 @@ The workflow should work out of the box. After the first run on your repository:
 
 ### Recommended Enhancements (Already Included in Template)
 
-This template already includes several advanced workflows:
+This template ships with a rich set of GitHub-native DevOps features:
 
-- **Dependabot** (`.github/dependabot.yml`) — Weekly updates for npm (frontend + backend) and GitHub Actions
-- **CodeQL** (`.github/workflows/codeql.yml`) — Weekly + on PR/push code scanning
-- **Release Workflow** (`.github/workflows/release.yml`) — Automatically creates GitHub Releases on version tags (v*.*.*)
-- **Security Scanning** — Trivy filesystem + Docker image scanning in CI
-- **Docker Publishing** — Automatically builds and pushes to GitHub Container Registry (GHCR) when a version tag is pushed
+**Core CI/CD**
+- **CI** — Full lint, type check, build, Trivy security scanning, and Docker validation
+- **CodeQL** — Advanced code scanning (weekly + on PR/push)
+- **Merge Queue** — Ready for GitHub Merge Queues
+- **Release** — Automatic GitHub Releases on version tags (`v*.*.*`)
+
+**Automation**
+- **Dependabot** — Weekly dependency updates for npm and GitHub Actions
+- **PR Auto-Labeler** — Automatically labels PRs based on changed paths
+
+**Reusable & Advanced**
+- Example reusable workflow (`reusable-ci.yml`)
+- Configurable branch protection via rulesets (see below)
 
 You can find all workflows in the `.github/workflows/` directory.
 

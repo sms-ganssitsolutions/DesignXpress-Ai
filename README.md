@@ -51,7 +51,8 @@ A premium, cinematic AI-powered video storytelling platform. Built as a full-sta
 - **Windows-First Automation** — `install.ps1`, `setup.ps1`, `start.ps1`, `deploy.ps1`
 - **Full Docker Support** — Development and production compose files
 - **Production Deployment Guide** — Detailed instructions for Railway, AWS, and VPS
-- **Advanced GitHub Workflows** — Dependabot, CodeQL security scanning, automated releases, Trivy vulnerability scanning, and Docker publishing to GHCR on version tags
+- **Advanced GitHub Workflows** — Dependabot, CodeQL, Merge Queue support, automated releases, security scanning (Trivy), Docker publishing to GHCR, reusable workflows, and PR auto-labeling
+- **Configurable Branch Protection** — Ready-to-apply Repository Rulesets via one-command scripts (highly recommended)
 
 ---
 
@@ -164,7 +165,7 @@ After generating:
    - **Windows**: `.\scripts\init-from-template.ps1`
    - **macOS/Linux**: `./scripts/init-from-template.sh`
 3. Follow the detailed guide in [TEMPLATE.md](./TEMPLATE.md)
-4. **Strongly recommended**: Configure GitHub settings using the guide in [docs/github-setup.md](./docs/github-setup.md) (branch protection, CI, security features, etc.)
+4. **Strongly recommended**: Configure GitHub settings using the guide in [docs/github-setup.md](./docs/github-setup.md), including modern **Repository Rulesets** for branch protection. We provide a ready-to-run script (`scripts/apply-branch-rulesets.ps1` or `.sh`).
 
 This gives you a powerful head start for building your own AI creative platform.
 

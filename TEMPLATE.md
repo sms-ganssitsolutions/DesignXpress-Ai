@@ -44,16 +44,26 @@ This repository is designed to be used as a **GitHub Template Repository**. When
 3. **Configure GitHub repository settings**
 
    See the **[GitHub Setup Guide](docs/github-setup.md)** for:
-   - Recommended branch protection rules
+   - **Repository Rulesets** (recommended modern branch protection)
+   - How to easily apply the included protection rules using our script
    - How to enable and customize the included CI workflows
    - Setting up CODEOWNERS
    - Enabling security features (Dependabot, CodeQL, Secret scanning)
 
-   The template already includes several advanced workflows:
-   - Dependabot for dependency updates
-   - CodeQL for security scanning
-   - Automated releases on version tags
-   - Docker image publishing to GHCR on release tags
+   The template ships with a full modern GitHub DevOps stack:
+   - Dependabot (dependency updates)
+   - CodeQL (security scanning)
+   - Merge Queue support
+   - Automated Releases on version tags
+   - Docker publishing to GHCR
+   - Configurable Repository Rulesets for branch protection
+   - PR auto-labeling
+
+   **Strongly recommended after generating**:
+   1. Run the initializer script
+   2. Run the branch protection script:
+      - Windows: `.\scripts\apply-branch-rulesets.ps1`
+      - macOS/Linux: `./scripts/apply-branch-rulesets.sh`
 
 3. **Install dependencies**
    ```powershell

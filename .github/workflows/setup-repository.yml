@@ -1,0 +1,63 @@
+# Setup Repository Workflow
+# This workflow helps apply branch protection rulesets and other repository settings
+# after a new repository is created from this template.
+#
+# Usage:
+# 1. Go to Actions tab → "Setup Repository"
+# 2. Run the workflow manually
+# 3. It will apply the configured rulesets from .github/rulesets/
+
+name: Setup Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply_rulesets:
+        description: 'Apply branch protection rulesets'
+        required: true
+        default: 'true'
+        type: boolean
+
+jobs:
+  setup:
+    name: Setup Repository Settings
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Note: For rulesets, you need "Administration: write" permission
+      # This requires the workflow to be triggered by a user with admin rights
+      # or using a GitHub App with proper permissions.
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Apply Branch Protection Rulesets
+        if: github.event.inputs.apply_rulesets == 'true'
+        run: |
+          echo "Applying branch protection rulesets..."
+          
+          # This uses the configurable ruleset script if available
+          if [ -f "scripts/apply-branch-rulesets.sh" ]; then
+            chmod +x scripts/apply-branch-rulesets.sh
+            ./scripts/apply-branch-rulesets.sh ${{ github.repository_owner }} ${{ github.event.repository.name }} || true
+          else
+            echo "No apply script found. Applying default ruleset via API..."
+            
+            # Fallback: Apply the static main branch ruleset
+            if [ -f ".github/rulesets/main-branch-protection.json" ]; then
+              gh api --method POST \
+                -H "Accept: application/vnd.github+json" \
+                /repos/${{ github.repository }}/rulesets \
+                --input .github/rulesets/main-branch-protection.json || echo "Ruleset may already exist or insufficient permissions"
+            fi
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## Repository Setup Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch protection rulesets applied (if permissions allowed)" >> $GITHUB_STEP_SUMMARY
+          echo "- Visit https://github.com/${{ github.repository }}/settings/rules to review" >> $GITHUB_STEP_SUMMARY

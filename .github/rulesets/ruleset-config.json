@@ -1,0 +1,26 @@
+{
+  "name": "Main Branch Protection",
+  "enforcement": "active",
+  "target_branches": "~DEFAULT_BRANCH",
+  "required_approving_review_count": 1,
+  "dismiss_stale_reviews_on_push": true,
+  "require_code_owner_review": true,
+  "require_last_push_approval": false,
+  "required_review_thread_resolution": true,
+  "required_status_checks": [
+    "Frontend (Next.js)",
+    "Backend (Express + TypeScript)",
+    "Docker Build Check",
+    "Security Scan"
+  ],
+  "strict_required_status_checks": true,
+  "require_linear_history": true,
+  "require_signed_commits": true,
+  "required_workflows": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "repository_id": null
+    }
+  ],
+  "enable_merge_queue": false
+}

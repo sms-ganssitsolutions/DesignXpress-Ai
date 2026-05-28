@@ -27,7 +27,7 @@ This hub provides easy navigation to all documentation.
 - [FFmpeg Rendering](ffmpeg-rendering.md) — Advanced multi-track video rendering system
 - [Real-time Collaboration](collaboration.md) — Socket.IO features (cursors, chat, sync)
 - [Deployment Guide](deployment.md) — Production deployment (Railway, AWS, Docker)
-- [GitHub Setup](github-setup.md) — Branch protection, CODEOWNERS, and CI/CD configuration
+- [GitHub Setup](github-setup.md) — Repository Rulesets, CODEOWNERS, full CI/CD (including Merge Queue, Release, CodeQL, Dependabot), and security configuration
 - [Diagrams](diagrams.md) — All Mermaid architecture and flow diagrams
 - [Workflows](workflows.md) — Common user and developer workflows
 - [FAQ](faq.md) — Frequently asked questions

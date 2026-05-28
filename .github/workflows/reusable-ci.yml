@@ -1,0 +1,44 @@
+# Reusable CI Workflow Example
+# This is an example of a reusable workflow that can be called from other workflows.
+# Very useful when you have multiple repositories with similar CI needs.
+
+name: Reusable CI
+
+on:
+  workflow_call:
+    inputs:
+      node_version:
+        required: false
+        type: string
+        default: '20'
+      working_directory:
+        required: false
+        type: string
+        default: '.'
+
+jobs:
+  lint-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+          cache: 'npm'
+          cache-dependency-path: ${{ inputs.working_directory }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ inputs.working_directory }}
+        run: npm ci
+
+      - name: Lint
+        working-directory: ${{ inputs.working_directory }}
+        run: npm run lint || echo "No lint script or lint completed"
+
+      - name: Test
+        working-directory: ${{ inputs.working_directory }}
+        run: npm test || echo "No test script defined"

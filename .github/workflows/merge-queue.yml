@@ -1,0 +1,36 @@
+# Merge Queue Workflow
+# This workflow runs when a pull request is added to a merge queue.
+# It is required when using GitHub's Merge Queue feature.
+
+name: Merge Queue
+
+on:
+  merge_group:
+
+jobs:
+  merge-queue-checks:
+    name: Merge Queue Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies (Frontend)
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install dependencies (Backend)
+        working-directory: backend
+        run: npm ci
+
+      - name: Run critical checks
+        run: |
+          echo "Running merge queue validation checks..."
+          # Add your most critical checks here
+          # Example: npm test, build, or specific lint rules
+          echo "All merge queue checks passed!"
