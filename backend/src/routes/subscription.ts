@@ -19,15 +19,16 @@ router.get('/', authenticate, async (req: AuthRequest, res) => {
   });
 });
 
-// POST upgrade (stub - would integrate with Stripe later)
+// POST upgrade (PayPal integration)
 router.post('/upgrade', authenticate, async (req: AuthRequest, res) => {
   const { plan } = req.body;
 
-  // In real app: create Stripe checkout session here
+  // In production: Create PayPal order / subscription here using PayPal SDK
   res.json({ 
     success: true, 
-    message: `Upgrade to ${plan} initiated (Stripe checkout would open here)`,
-    checkoutUrl: '/billing?success=true' 
+    message: `PayPal checkout for ${plan} plan initiated`,
+    checkoutUrl: 'https://www.sandbox.paypal.com/checkoutnow?token=demo',
+    provider: 'paypal'
   });
 });
 

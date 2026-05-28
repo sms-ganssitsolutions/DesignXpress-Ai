@@ -12,6 +12,7 @@ import aiRoutes from './routes/ai';
 import uploadRoutes from './routes/upload';
 import exportRoutes from './routes/export';
 import subscriptionRoutes from './routes/subscription';
+import templatesRoutes from './routes/templates';
 
 dotenv.config();
 
@@ -64,23 +65,71 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/export', exportRoutes);
 app.use('/api/subscription', subscriptionRoutes);
+app.use('/api/templates', templatesRoutes);
 
 // ===========================================
-// SOCKET.IO (Real-time collaboration)
+// SOCKET.IO - Real-time Collaboration (v0.6)
 // ===========================================
+const activeUsers = new Map<string, { userId: string; name: string; color: string }>();
+
 io.on('connection', (socket) => {
   console.log('Socket connected:', socket.id);
 
-  socket.on('join-project', (projectId: string) => {
+  socket.on('join-project', ({ projectId, user }: { projectId: string; user: any }) => {
     socket.join(`project:${projectId}`);
-    console.log(`Socket ${socket.id} joined project ${projectId}`);
+    
+    const userData = {
+      userId: user?.id || socket.id,
+      name: user?.name || 'Anonymous Creator',
+      color: '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'),
+    };
+    
+    activeUsers.set(socket.id, userData);
+    
+    // Notify others
+    socket.to(`project:${projectId}`).emit('user-joined', userData);
+    socket.emit('active-users', Array.from(activeUsers.values()));
+    
+    console.log(`${userData.name} joined project ${projectId}`);
   });
 
+  // Real-time cursor position
+  socket.on('cursor-move', ({ projectId, x, y }) => {
+    const userData = activeUsers.get(socket.id);
+    if (userData) {
+      socket.to(`project:${projectId}`).emit('cursor-update', {
+        userId: userData.userId,
+        name: userData.name,
+        color: userData.color,
+        x, y,
+      });
+    }
+  });
+
+  // Live scene updates
   socket.on('scene-update', (data) => {
-    socket.to(`project:${data.projectId}`).emit('scene-updated', data);
+    socket.to(`project:${data.projectId}`).emit('scene-updated', {
+      ...data,
+      updatedBy: activeUsers.get(socket.id)?.name || 'Someone',
+    });
+  });
+
+  // Real-time team chat
+  socket.on('chat-message', ({ projectId, name, text }) => {
+    socket.to(`project:${projectId}`).emit('chat-message', {
+      name,
+      text,
+      ts: Date.now(),
+    });
   });
 
   socket.on('disconnect', () => {
+    const userData = activeUsers.get(socket.id);
+    if (userData) {
+      // Broadcast user left to all rooms
+      io.emit('user-left', userData.userId);
+      activeUsers.delete(socket.id);
+    }
     console.log('Socket disconnected:', socket.id);
   });
 });

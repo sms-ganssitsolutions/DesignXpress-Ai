@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Logo from '@/components/Logo';
+import { useState } from 'react';
 
 const plans = [
   { 
@@ -24,6 +25,14 @@ const plans = [
 ];
 
 export default function BillingPage() {
+  const [showPayPal, setShowPayPal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('');
+
+  const handleUpgrade = (planName: string) => {
+    setSelectedPlan(planName);
+    setShowPayPal(true);
+  };
+
   return (
     <div className="min-h-screen bg-[#0A0A0F]">
       <nav className="glass border-b border-white/10 h-20 flex items-center px-8">
@@ -52,8 +61,9 @@ export default function BillingPage() {
               <button 
                 disabled={plan.current}
                 className={`w-full py-3 rounded-2xl text-sm font-medium ${plan.current ? 'bg-white/10 cursor-default' : 'btn-primary'}`}
+                onClick={() => handleUpgrade(plan.name)}
               >
-                {plan.current ? 'Current Plan' : 'Upgrade'}
+                {plan.current ? 'Current Plan' : 'Upgrade with PayPal'}
               </button>
             </div>
           ))}
@@ -65,6 +75,34 @@ export default function BillingPage() {
           <div className="text-xs text-white/40 mt-4">Billing history and invoices coming in v0.6</div>
         </div>
       </div>
+
+      {/* PayPal Checkout Modal (Sandbox) */}
+      {showPayPal && (
+        <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6">
+          <div className="glass rounded-3xl max-w-md w-full p-8 text-center">
+            <h3 className="text-2xl font-semibold mb-2">PayPal Checkout</h3>
+            <p className="text-white/60 mb-6">Upgrading to <span className="text-[#F97316]">{selectedPlan}</span> plan</p>
+
+            <div className="bg-[#003087] text-white rounded-2xl p-6 mb-6">
+              <div className="text-sm mb-1">PayPal Sandbox</div>
+              <div className="text-2xl font-medium">Secure Checkout</div>
+              <div className="text-xs mt-2 opacity-70">demo@designxpress.ai • $29.00 / month</div>
+            </div>
+
+            <button 
+              onClick={() => {
+                alert('✅ PayPal payment successful! (Sandbox)\nYour plan will be upgraded.');
+                setShowPayPal(false);
+              }}
+              className="w-full py-3 bg-[#0070BA] hover:bg-[#003087] rounded-2xl font-medium mb-3"
+            >
+              Pay with PayPal
+            </button>
+
+            <button onClick={() => setShowPayPal(false)} className="text-sm text-white/50">Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

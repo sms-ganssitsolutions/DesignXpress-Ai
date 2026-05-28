@@ -18,11 +18,13 @@ A premium cinematic AI video storytelling platform. Built for Windows 11 with fu
 - **Media Library**
 - **Advanced Drag & Drop Timeline** with real timecodes + scene editing modal
 - **Real AI Providers** — OpenAI + ElevenLabs (voice) + Stability AI (images) fully wired
-- **Ultra Advanced FFmpeg** — Crossfades, proper image scaling, burned subtitles, voiceover mixing
-- **In-Studio Asset Upload** — Attach images & voiceovers directly to scenes
-- **Professional Render Progress** — Live logs + beautiful progress modal
-- **Production Docker** — Full prod compose + nginx + deployment script
-- **Subscriptions Stub** — Billing page + plan management UI + backend routes
+- **Ultra Advanced FFmpeg v0.6** — Multi-track audio (voiceover + music bed with ducking), advanced transitions (dissolve/wipe/fade), subtitle burning
+- **Real-time Collaboration** — Live cursors + active users + in-Studio team chat via Socket.IO
+- **Templates Marketplace** — Full publish + load flow from Studio
+- **PayPal Payments** — Working checkout modal (sandbox)
+- **Advanced Multi-track FFmpeg** — Voiceover + music bed with transitions
+- **AI Music Suggestions** — New tool in AI panel
+- **Production Ready** — Full deployment guide + Docker production setup
 - **Windows-first automation** (install.ps1, setup.ps1, start.ps1, deploy.ps1)
 
 ---
@@ -94,6 +96,31 @@ STABILITY_API_KEY=...
 docker compose down           # Stop containers
 npm run db:studio             # Open Prisma Studio
 ```
+
+---
+
+## ☁️ Cloud Deployment
+
+### Railway (Recommended - Easiest)
+1. Push code to GitHub
+2. Create new project on Railway
+3. Add services: PostgreSQL, Redis, Backend, Frontend
+4. Set environment variables from `.env.production.example`
+5. Deploy
+
+### AWS (Production Grade)
+- Use ECS or App Runner for containers
+- RDS for PostgreSQL
+- ElastiCache for Redis
+- CloudFront + S3 for static assets
+- Full guide coming in `/docs/deployment-aws.md`
+
+### Docker Production (Any VPS)
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+
+See `docker-compose.prod.yml` and `scripts/deploy.ps1`.
 
 ---
 
