@@ -1,0 +1,97 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Testing
+coverage/
+.nyc_output/
+
+# Production builds
+build/
+dist/
+.next/
+out/
+*.exe
+*.dll
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Python (common in AI projects)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+*.egg-info/
+.eggs/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# AI / ML artifacts
+*.pth
+*.pt
+*.h5
+*.onnx
+*.pkl
+*.ckpt
+*.safetensors
+wandb/
+mlruns/
+checkpoints/
+models/*.bin
+*.gguf
+
+# Misc
+*.bak
+*.tmp
+*.temp
+.cache/
+.temp/
+tmp/
+
+# Windows specific
+*.lnk
+*.msi
+*.msm
+*.msp
+Desktop.ini
+$RECYCLE.BIN/
