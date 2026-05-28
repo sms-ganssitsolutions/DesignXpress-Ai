@@ -533,6 +533,34 @@ export default function AIStoryVideoStudio() {
           </div>
 
           <div className="mt-auto p-5 border-t border-white/10 text-xs">
+            <button 
+              onClick={async () => {
+                if (!currentProjectId) return;
+                try {
+                  const res = await api.get(`/projects/${currentProjectId}/versions`);
+                  const versions = res.data.versions || [];
+                  if (versions.length === 0) {
+                    toast('No previous versions saved yet');
+                    return;
+                  }
+                  const choice = prompt(`Restore version? (1-${versions.length})\n` + versions.map((v: any, i: number) => `${i+1}. ${new Date(v.timestamp).toLocaleString()}`).join('\n'));
+                  const idx = parseInt(choice || '') - 1;
+                  if (idx >= 0 && versions[idx]) {
+                    await api.post(`/projects/${currentProjectId}/restore/${versions[idx].id}`);
+                    // Reload scenes
+                    const proj = await api.get(`/projects/${currentProjectId}`);
+                    const loaded = proj.data.project.scenes.map((s: any) => ({ id: s.id, title: s.title, duration: s.duration, script: s.script || '' }));
+                    setScenes(loaded);
+                    toast.success('Version restored');
+                  }
+                } catch {
+                  toast.error('Failed to load versions');
+                }
+              }}
+              className="text-[#8B5CF6] hover:underline block mb-2"
+            >
+              Version History
+            </button>
             <Link href="/dashboard" className="text-[#8B5CF6] hover:underline">← Back to Dashboard</Link>
           </div>
         </div>
@@ -543,12 +571,20 @@ export default function AIStoryVideoStudio() {
           <div className="flex-1 bg-black relative flex items-center justify-center border-b border-white/10 overflow-hidden">
             <div className="relative w-full max-w-[960px] aspect-video bg-[#111] flex items-center justify-center">
               {/* Real Media Player + Remote Cursors */}
-              {selectedScene?.voiceoverUrl || selectedScene?.thumbnailUrl ? (
+              {selectedScene?.videoUrl || selectedScene?.voiceoverUrl || selectedScene?.thumbnailUrl ? (
                 <div 
                   className="relative w-full h-full flex items-center justify-center"
                   onMouseMove={handleMouseMove}
                 >
-                  {selectedScene.thumbnailUrl ? (
+                  {/* Playable real video when attached */}
+                  {selectedScene.videoUrl ? (
+                    <video 
+                      id="scene-video-player"
+                      src={selectedScene.videoUrl}
+                      className="max-h-full max-w-full object-contain"
+                      controls
+                    />
+                  ) : selectedScene.thumbnailUrl ? (
                     <img 
                       src={selectedScene.thumbnailUrl} 
                       alt={selectedScene.title}
@@ -558,7 +594,8 @@ export default function AIStoryVideoStudio() {
                     <div className="text-6xl text-white/10">🎥</div>
                   )}
 
-                  {selectedScene.voiceoverUrl && (
+                  {/* Voiceover audio (only if no video) */}
+                  {!selectedScene.videoUrl && selectedScene.voiceoverUrl && (
                     <audio 
                       id="scene-audio"
                       src={selectedScene.voiceoverUrl} 

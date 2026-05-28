@@ -19,10 +19,12 @@ A premium cinematic AI video storytelling platform. Built for Windows 11 with fu
 - **Advanced Drag & Drop Timeline** with real timecodes + scene editing modal
 - **Real AI Providers** — OpenAI + ElevenLabs (voice) + Stability AI (images) fully wired
 - **Ultra Advanced FFmpeg v0.6** — Multi-track audio (voiceover + music bed with ducking), advanced transitions (dissolve/wipe/fade), subtitle burning
-- **Real-time Collaboration** — Live cursors + active users + in-Studio team chat via Socket.IO
-- **Templates Marketplace** — Full publish + load flow from Studio
+- **Real-time Collaboration** — Live cursors + bidirectional scene sync + in-Studio team chat
+- **Templates Marketplace** — Full publish + one-click load into Studio with real scenes
 - **PayPal Payments** — Working checkout modal (sandbox)
-- **Advanced Multi-track FFmpeg** — Voiceover + music bed with transitions
+- **Advanced Multi-track FFmpeg v1.0** — Voiceover + music bed + real uploaded video clips per scene with proper trimming/scaling/overlays
+- **Playable Video Preview** — Play actual video assets directly in the Studio timeline preview
+- **Project Version History** — Automatic versioning + restore previous timeline states
 - **AI Music Suggestions** — New tool in AI panel
 - **Production Ready** — Full deployment guide + Docker production setup
 - **Windows-first automation** (install.ps1, setup.ps1, start.ps1, deploy.ps1)

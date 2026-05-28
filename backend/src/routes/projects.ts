@@ -85,6 +85,7 @@ const sceneSchema = z.object({
   script: z.string().optional(),
   voiceoverUrl: z.string().optional(),
   thumbnailUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
   startTime: z.number().optional(),
 });
 
@@ -102,12 +103,29 @@ router.put('/:id/scenes', authenticate, async (req: AuthRequest, res) => {
 
     if (!project) return res.status(404).json({ error: 'Project not found' });
 
+    // Save current state as version before overwriting (simple version history)
+    const currentScenes = await prisma.scene.findMany({ where: { projectId: req.params.id }, orderBy: { order: 'asc' } });
+    if (currentScenes.length > 0) {
+      const existingVersions = (project as any).versions || [];
+      const newVersion = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        scenes: currentScenes.map(s => ({
+          title: s.title, duration: s.duration, script: s.script, voiceoverUrl: s.voiceoverUrl, thumbnailUrl: s.thumbnailUrl, videoUrl: (s as any).videoUrl
+        }))
+      };
+      await prisma.project.update({
+        where: { id: req.params.id },
+        data: { versions: [...existingVersions.slice(-4), newVersion] as any } // keep last 5 versions
+      });
+    }
+
     // Delete existing scenes
     await prisma.scene.deleteMany({
       where: { projectId: req.params.id },
     });
 
-    // Create new scenes with proper ordering
+    // Create new scenes
     const createdScenes = await Promise.all(
       scenes.map((scene: any, index: number) =>
         prisma.scene.create({
@@ -119,6 +137,8 @@ router.put('/:id/scenes', authenticate, async (req: AuthRequest, res) => {
             script: scene.script || null,
             voiceoverUrl: scene.voiceoverUrl || null,
             thumbnailUrl: scene.thumbnailUrl || null,
+            // videoUrl support
+            ...(scene.videoUrl && { videoUrl: scene.videoUrl }),
             startTime: scene.startTime || index * scene.duration,
           },
         })
@@ -130,6 +150,52 @@ router.put('/:id/scenes', authenticate, async (req: AuthRequest, res) => {
     console.error(error);
     res.status(400).json({ error: 'Failed to save scenes' });
   }
+});
+
+// GET /api/projects/:id/versions - Get version history
+router.get('/:id/versions', authenticate, async (req: AuthRequest, res) => {
+  const project = await prisma.project.findFirst({
+    where: { id: req.params.id, userId: req.user!.id },
+    select: { versions: true }
+  });
+
+  res.json({ versions: (project as any)?.versions || [] });
+});
+
+// POST /api/projects/:id/restore/:versionId - Restore a previous version
+router.post('/:id/restore/:versionId', authenticate, async (req: AuthRequest, res) => {
+  const project = await prisma.project.findFirst({
+    where: { id: req.params.id, userId: req.user!.id },
+  });
+
+  if (!project) return res.status(404).json({ error: 'Project not found' });
+
+  const versions = (project as any).versions || [];
+  const version = versions.find((v: any) => v.id == req.params.versionId);
+
+  if (!version) return res.status(404).json({ error: 'Version not found' });
+
+  // Restore scenes from version
+  await prisma.scene.deleteMany({ where: { projectId: req.params.id } });
+
+  await Promise.all(
+    version.scenes.map((s: any, index: number) =>
+      prisma.scene.create({
+        data: {
+          projectId: req.params.id,
+          order: index + 1,
+          title: s.title,
+          duration: s.duration,
+          script: s.script,
+          voiceoverUrl: s.voiceoverUrl,
+          thumbnailUrl: s.thumbnailUrl,
+          videoUrl: s.videoUrl,
+        },
+      })
+    )
+  );
+
+  res.json({ success: true });
 });
 
 export default router;

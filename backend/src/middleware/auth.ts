@@ -26,7 +26,7 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      select: { id: true, email: true, name: true },
+      select: { id: true, email: true, name: true, role: true },
     });
 
     if (!user) {
@@ -38,4 +38,12 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
   } catch (error) {
     return res.status(401).json({ error: 'Invalid or expired token' });
   }
+};
+
+// Optional: Admin only middleware for future use
+export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
+  if (req.user?.role !== 'admin') {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
+  next();
 };

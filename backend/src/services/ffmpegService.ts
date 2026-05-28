@@ -44,23 +44,29 @@ export async function renderVideo(projectId: string, scenes: any[], options: { m
       const title = (scene.title || `Scene ${i + 1}`).replace(/'/g, "\\'");
       const scriptText = (scene.script || '').substring(0, 240).replace(/'/g, "\\'").replace(/\n/g, ' ');
 
-      // Visual source
+      // Visual source - support real video clips, images, or color
       let visualInput = `-f lavfi -t ${duration} -i color=c=0x0A0A0F:s=1920x1080:r=24`;
+      const videoPath = scene.videoUrl 
+        ? path.join(process.cwd(), scene.videoUrl.replace(/^\//, ''))
+        : null;
       const thumbnailPath = scene.thumbnailUrl 
         ? path.join(process.cwd(), scene.thumbnailUrl.replace(/^\//, ''))
         : null;
 
-      if (thumbnailPath && fs.existsSync(thumbnailPath)) {
+      if (videoPath && fs.existsSync(videoPath)) {
+        // Real video clip support - trim and scale
+        visualInput = `-ss 0 -t ${duration} -i "${videoPath}"`;
+      } else if (thumbnailPath && fs.existsSync(thumbnailPath)) {
         visualInput = `-loop 1 -t ${duration} -i "${thumbnailPath}"`;
       }
 
-      // Professional video filter chain
-      let vf = `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2`;
+      // Professional video filter chain - works for both video and image inputs
+      let vf = `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1`;
       
-      // Cinematic color grade (slight contrast + teal/orange feel)
+      // Cinematic color grade
       vf += `,eq=contrast=1.08:saturation=1.1`;
       
-      // Title
+      // Title overlay
       vf += `,drawtext=fontfile=/Windows/Fonts/arial.ttf:text='${title}':fontcolor=white:fontsize=54:x=70:y=85:box=1:boxcolor=black@0.7:boxborderw=20`;
       
       // Burned subtitles
@@ -80,7 +86,25 @@ export async function renderVideo(projectId: string, scenes: any[], options: { m
         audioInputs = `-f lavfi -t ${duration} -i anullsrc=channel_layout=stereo:sample_rate=48000`;
       }
 
-      const cmd = `"${ffmpegCmd}" -y ${visualInput} ${audioInputs} -vf "${vf}" -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -r 24 -t ${duration} "${segmentPath}"`;
+      let cmd = '';
+
+      if (videoPath && fs.existsSync(videoPath)) {
+        // Advanced real video clip handling
+        const voicePath = scene.voiceoverUrl 
+          ? path.join(process.cwd(), scene.voiceoverUrl.replace(/^\//, ''))
+          : null;
+
+        if (voicePath && fs.existsSync(voicePath)) {
+          // Video + separate voiceover (duck video audio slightly)
+          cmd = `"${ffmpegCmd}" -y -ss 0 -t ${duration} -i "${videoPath}" -i "${voicePath}" -filter_complex "[0:v]${vf}[v];[0:a]volume=0.4[a0];[1:a]aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo[a1];[a0][a1]amix=inputs=2:duration=first[aout]" -map "[v]" -map "[aout]" -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -t ${duration} "${segmentPath}"`;
+        } else {
+          // Pure video clip (use its own audio)
+          cmd = `"${ffmpegCmd}" -y -ss 0 -t ${duration} -i "${videoPath}" -vf "${vf}" -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -t ${duration} "${segmentPath}"`;
+        }
+      } else {
+        // Image or color + audio (existing logic)
+        cmd = `"${ffmpegCmd}" -y ${visualInput} ${audioInputs} -vf "${vf}" -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -r 24 -t ${duration} "${segmentPath}"`;
+      }
 
       await new Promise<void>((resolve) => {
         exec(cmd, { maxBuffer: 1024 * 1024 * 80 }, (err) => {
