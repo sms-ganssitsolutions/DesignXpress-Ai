@@ -40,3 +40,41 @@ gh release create v1.0-documentation-complete `
 # - Make sure you are in the project directory or use --repo
 # - The file RELEASE_v1.0-documentation-complete.md must exist in the current directory
 # - You must have `gh` CLI installed and authenticated with write access to the repo
+
+# ==============================================
+# BONUS: Create Release + Attach Consolidated Guide as Asset
+# ==============================================
+
+# See the dedicated script: CREATE_RELEASE_WITH_ASSET.ps1
+# It contains clean ready-to-run blocks for:
+#   - Draft + Upload Asset (recommended)
+#   - Non-Draft + Upload Asset
+#   - Short description + Upload Asset
+#   - Short description + Multiple Assets
+#   - Full notes + Multiple Assets
+
+# Quick non-draft example (Single asset):
+gh release create v1.0-documentation-complete `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --title "v1.0-documentation-complete" `
+  --notes-file RELEASE_v1.0-documentation-complete.md
+
+gh release upload v1.0-documentation-complete `
+  docs/DesignXpress_AI_Complete_User_and_Developer_Guide.md `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --clobber
+
+# ==============================================
+# Short Description + Multiple Assets (New)
+# ==============================================
+gh release create v1.0-documentation-complete `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --title "v1.0-documentation-complete" `
+  --notes "v1.0-documentation-complete delivers a complete, professional documentation suite for DesignXpress AI Story Video Studio. This release introduces a central Documentation Hub, a dedicated diagrams collection with rich Mermaid visualizations (AI flows, media pipeline, export queue, data models, and collaboration), multiple new specialized guides (workflows, FAQ, testing, performance, security, and more), and a single-file consolidated guide optimized for PDF export — significantly improving discoverability and usability across the entire project."
+
+gh release upload v1.0-documentation-complete `
+  docs/DesignXpress_AI_Complete_User_and_Developer_Guide.md `
+  RELEASE_v1.0-documentation-complete.md `
+  docs/RELEASE_COMMANDS.md `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --clobber

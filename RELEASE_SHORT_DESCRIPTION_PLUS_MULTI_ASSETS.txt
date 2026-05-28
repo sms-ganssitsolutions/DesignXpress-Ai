@@ -1,0 +1,42 @@
+# Short Description + Multiple Assets (Non-Draft)
+
+# Step 1: Create the release using the short one-paragraph description
+gh release create v1.0-documentation-complete `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --title "v1.0-documentation-complete" `
+  --notes "v1.0-documentation-complete delivers a complete, professional documentation suite for DesignXpress AI Story Video Studio. This release introduces a central Documentation Hub, a dedicated diagrams collection with rich Mermaid visualizations (AI flows, media pipeline, export queue, data models, and collaboration), multiple new specialized guides (workflows, FAQ, testing, performance, security, and more), and a single-file consolidated guide optimized for PDF export — significantly improving discoverability and usability across the entire project."
+
+# Step 2: Attach multiple useful files as assets
+gh release upload v1.0-documentation-complete `
+  docs/DesignXpress_AI_Complete_User_and_Developer_Guide.md `
+  RELEASE_v1.0-documentation-complete.md `
+  docs/RELEASE_COMMANDS.md `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --clobber
+
+
+# ============================================================
+# Full Notes File + Multiple Assets (Non-Draft)
+# ============================================================
+
+# Step 1: Create using the full notes file
+gh release create v1.0-documentation-complete `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --title "v1.0-documentation-complete" `
+  --notes-file RELEASE_v1.0-documentation-complete.md
+
+# Step 2: Attach multiple files
+gh release upload v1.0-documentation-complete `
+  docs/DesignXpress_AI_Complete_User_and_Developer_Guide.md `
+  RELEASE_DESCRIPTION_SHORT.md `
+  docs/RELEASE_COMMANDS.md `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --clobber
+
+
+# Tip: Cleaner asset names
+gh release upload v1.0-documentation-complete `
+  "docs/DesignXpress_AI_Complete_User_and_Developer_Guide.md:DesignXpress_AI_Complete_Guide.md" `
+  "RELEASE_v1.0-documentation-complete.md:Full_Release_Notes.md" `
+  --repo sms-ganssitsolutions/DesignXpress-Ai `
+  --clobber
