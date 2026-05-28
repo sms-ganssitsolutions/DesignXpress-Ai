@@ -162,6 +162,27 @@ router.get('/:id/versions', authenticate, async (req: AuthRequest, res) => {
   res.json({ versions: (project as any)?.versions || [] });
 });
 
+// Public sharing
+router.post('/:id/share', authenticate, async (req: AuthRequest, res) => {
+  const project = await prisma.project.findFirst({
+    where: { id: req.params.id, userId: req.user!.id },
+  });
+
+  if (!project) return res.status(404).json({ error: 'Project not found' });
+
+  const shareToken = `share_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+
+  await prisma.project.update({
+    where: { id: req.params.id },
+    data: { isPublic: true, shareToken } as any,
+  });
+
+  res.json({ 
+    success: true, 
+    shareUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/shared/${req.params.id}?token=${shareToken}` 
+  });
+});
+
 // POST /api/projects/:id/restore/:versionId - Restore a previous version
 router.post('/:id/restore/:versionId', authenticate, async (req: AuthRequest, res) => {
   const project = await prisma.project.findFirst({

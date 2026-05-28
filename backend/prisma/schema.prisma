@@ -25,6 +25,7 @@ model User {
   // Relations
   projects      Project[]
   aiRequests    AIRequest[]
+  exportJobs    ExportJob[]
   notifications Notification[]
   ownedTeams    Team[]      @relation("TeamOwner")
   teamMembers   TeamMember[]
@@ -48,6 +49,7 @@ model Project {
   scenes      Scene[]
   assets      Asset[]
   aiRequests  AIRequest[]
+  exportJobs  ExportJob[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -125,6 +127,26 @@ model AIRequest {
   completedAt DateTime?
 
   @@map("ai_requests")
+}
+
+model ExportJob {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id])
+
+  status      String   @default("queued") // queued | processing | completed | failed
+  progress    Int      @default(0)       // 0-100
+  outputUrl   String?
+  error       String?
+  options     Json?    // musicUrl, resolution, etc.
+
+  createdAt   DateTime @default(now())
+  completedAt DateTime?
+
+  @@map("export_jobs")
 }
 
 model Subscription {

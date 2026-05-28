@@ -360,17 +360,77 @@ export default function AIStoryVideoStudio() {
     };
     if (musicUrl) payload.musicUrl = musicUrl;
 
-    setRenderProgress({ open: true, status: 'Initializing multi-track render...', percent: 5, logs: ['[System] Preparing scenes + music bed...'] });
+    setRenderProgress({ 
+      open: true, 
+      status: 'Queuing export job...', 
+      percent: 5, 
+      logs: ['[Queue] Adding job to BullMQ...'] 
+    });
 
-    // Reuse most of the logic but pass music
     try {
-      // ... (simplified - call the same API)
       const response = await api.post('/export/video', payload);
-      // Update progress modal similarly...
-      setRenderProgress(p => ({ ...p, percent: 100, status: '✅ Multi-track render complete!' }));
-      // download logic...
-    } catch (e) {
-      // fallback
+      const { jobId } = response.data;
+
+      setRenderProgress(p => ({ 
+        ...p, 
+        status: 'Job queued. Waiting for worker...', 
+        percent: 15,
+        logs: [...p.logs, `[Job ${jobId}] Queued successfully`] 
+      }));
+
+      // Poll for status
+      const poll = async () => {
+        try {
+          const statusRes = await api.get(`/export/status/${jobId}`);
+          const job = statusRes.data.job;
+
+          if (job.status === 'completed' && job.outputUrl) {
+            setRenderProgress(p => ({ 
+              ...p, 
+              percent: 100, 
+              status: '✅ Export complete!',
+              logs: [...p.logs, `[Done] File ready: ${job.outputUrl}`] 
+            }));
+
+            // Auto download
+            setTimeout(() => {
+              const link = document.createElement('a');
+              link.href = `http://localhost:5000${job.outputUrl}`;
+              link.download = `DesignXpress_${currentProjectId || 'Export'}.mp4`;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }, 800);
+          } else if (job.status === 'failed') {
+            setRenderProgress(p => ({ 
+              ...p, 
+              percent: 100, 
+              status: `❌ Failed: ${job.error || 'Unknown error'}`,
+              logs: [...p.logs, `[Error] ${job.error}`] 
+            }));
+          } else {
+            const newPercent = Math.min(95, (job.progress || 0) + 15);
+            setRenderProgress(p => ({ 
+              ...p, 
+              percent: newPercent,
+              status: job.status === 'processing' ? 'Rendering with FFmpeg...' : 'Processing...',
+              logs: [...p.logs, `[Progress] ${job.progress || 0}%`] 
+            }));
+            setTimeout(poll, 2000);
+          }
+        } catch (err) {
+          setRenderProgress(p => ({ ...p, status: 'Error checking status' }));
+        }
+      };
+
+      setTimeout(poll, 1500);
+    } catch (err: any) {
+      setRenderProgress(p => ({ 
+        ...p, 
+        percent: 100, 
+        status: 'Failed to queue export',
+        logs: [...p.logs, `[Error] ${err.message || 'Unknown'}`] 
+      }));
     }
   };
 

@@ -1,19 +1,38 @@
 # Cloud Deployment Guide for DesignXpress AI Story Video Studio
 
-## 1. Railway (Fastest & Recommended for Startups)
+## 1. Railway (Fastest & Recommended - Accurate Steps)
 
-1. Push your code to GitHub.
-2. Go to [railway.app](https://railway.app) → New Project → Deploy from GitHub.
-3. Add services:
-   - PostgreSQL (plugin)
-   - Redis (plugin)
-   - Backend (use Dockerfile.prod or Nixpacks)
-   - Frontend (use Dockerfile.prod)
-4. Set environment variables from `.env.production.example`.
-5. Add a custom domain if desired.
-6. FFmpeg: Railway containers usually have it, or install via build step.
+**Prerequisites**: GitHub repo with your code pushed.
 
-**Pro tip**: Use the production Dockerfiles provided.
+1. Go to https://railway.app → Sign up with GitHub.
+2. Click "New Project" → "Deploy from GitHub Repo".
+3. Select your repo.
+4. Railway will detect services. Manually add:
+   - **PostgreSQL** (Add Plugin → PostgreSQL)
+   - **Redis** (Add Plugin → Redis)
+5. For Backend:
+   - Create new service → GitHub → select repo, root directory = `backend`
+   - Use `Dockerfile.prod` if available, or let it auto-detect.
+   - Set environment variables (from `.env.production.example`):
+     - DATABASE_URL (copy from Railway Postgres plugin)
+     - REDIS_URL (copy from Redis plugin)
+     - JWT_SECRET=your-long-random-string
+     - OPENAI_API_KEY, ELEVENLABS_API_KEY, etc.
+6. For Frontend:
+   - New service → GitHub → root directory = `frontend`
+   - Set NEXT_PUBLIC_API_URL to your backend public URL (e.g. https://your-backend.up.railway.app)
+7. In backend service, add a start command if needed: `node dist/index.js`
+8. Deploy. Railway gives you public URLs automatically.
+9. For FFmpeg on Railway: It may not be pre-installed. Add a build step or use a custom image. For production video rendering, consider offloading to a separate worker.
+
+**Error Handling Tip**: Monitor logs in Railway dashboard. The backend includes `/health` endpoint for basic checks.
+
+**Common Issues**:
+- Database connection: Make sure DATABASE_URL uses the internal Railway URL during build if needed.
+- Large file uploads: Increase limits or use S3 / Cloud storage.
+- FFmpeg not available: Video exports will fall back or fail. Consider using a custom Railway template with FFmpeg pre-installed or offload rendering.
+
+This setup is functional as of 2026 with proper env vars.
 
 ## 2. AWS (Production Scale)
 

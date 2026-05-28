@@ -2,86 +2,193 @@
 
 **Where Innovation Meets Excellence**
 
-A premium cinematic AI video storytelling platform. Built for Windows 11 with full PowerShell automation, Docker, and production-ready architecture.
+A premium, cinematic AI-powered video storytelling platform. Built as a full-stack local development environment optimized for **Windows 11**, with professional-grade tools, real-time collaboration, advanced rendering, and production-ready architecture.
 
 ---
 
-## ✨ What's Included (v0.4 - Advanced Local Build)
+## ✨ Current Feature Set (v1.0)
 
-- **Cinematic Landing Page** — Futuristic glassmorphism + neon purple/orange design
-- **Full Authentication** — Login, Register, JWT-based (demo ready)
-- **Dashboard** — Project management
-- **Professional AI Video Studio** — Timeline, preview player, AI tools panel
-- **Real AI Integration** — OpenAI (GPT-4o-mini) for scripts/stories/scenes + graceful fallback
-- **FFmpeg Export Pipeline** — Real video rendering support (with demo fallback)
-- **Templates Gallery**
-- **Media Library**
-- **Advanced Drag & Drop Timeline** with real timecodes + scene editing modal
-- **Real AI Providers** — OpenAI + ElevenLabs (voice) + Stability AI (images) fully wired
-- **Ultra Advanced FFmpeg v0.6** — Multi-track audio (voiceover + music bed with ducking), advanced transitions (dissolve/wipe/fade), subtitle burning
-- **Real-time Collaboration** — Live cursors + bidirectional scene sync + in-Studio team chat
-- **Templates Marketplace** — Full publish + one-click load into Studio with real scenes
-- **PayPal Payments** — Working checkout modal (sandbox)
-- **Advanced Multi-track FFmpeg v1.0** — Voiceover + music bed + real uploaded video clips per scene with proper trimming/scaling/overlays
-- **Playable Video Preview** — Play actual video assets directly in the Studio timeline preview
-- **Project Version History** — Automatic versioning + restore previous timeline states
-- **AI Music Suggestions** — New tool in AI panel
-- **Production Ready** — Full deployment guide + Docker production setup
-- **Windows-first automation** (install.ps1, setup.ps1, start.ps1, deploy.ps1)
+### Core Platform
+- **Cinematic Landing Page** — Futuristic glassmorphism design with neon purple + orange accents
+- **Full Authentication System** — Login, Register, JWT (demo account ready)
+- **Dashboard** — Project management with real database persistence
+- **Professional AI Video Studio** — Advanced timeline editor, preview player, layered AI tools
+
+### Editing & Rendering
+- **Advanced Drag & Drop Timeline** with real timecodes and scene editing modal
+- **Playable Video Preview** — Play actual uploaded video clips directly in the timeline
+- **Ultra Advanced FFmpeg Renderer (v1.0)**:
+  - Real uploaded video clip support per scene
+  - Multi-track audio (voiceover + music bed with intelligent ducking)
+  - Advanced transitions (dissolve, wipe, fade)
+  - Burned-in titles and subtitles
+  - Proper scaling and cinematic color grading
+
+### AI Capabilities
+- **AI Script & Story Generator** — Powered by OpenAI (real calls when keys present)
+- **AI Voiceovers** — ElevenLabs integration ready
+- **AI Thumbnails & Key Art** — Stability AI + DALL·E ready
+- **AI Music Suggestions** — Cinematic background music prompt generator
+- **Auto Subtitles** — Timed caption generation
+
+### Collaboration & Sharing
+- **Real-time Collaboration**:
+  - Live floating cursors with user names and colors
+  - Bidirectional scene synchronization
+  - In-Studio team chat
+  - Active collaborator presence avatars
+- **Templates Marketplace** — Publish projects as templates and load them with one click
+- **Project Version History** — Automatic versioning with one-click restore
+- **Public Project Sharing** — Generate shareable links (foundation complete)
+
+### Backend & Infrastructure
+- **BullMQ Export Queue** — Professional background job system for video rendering
+- **Export History & Status Tracking** — Full job lifecycle with error handling
+- **Media Library** — Organized asset management with folders and search
+- **PayPal Integration** — Working checkout experience (sandbox)
+
+### Developer Experience
+- **Windows-First Automation** — `install.ps1`, `setup.ps1`, `start.ps1`, `deploy.ps1`
+- **Full Docker Support** — Development and production compose files
+- **Production Deployment Guide** — Detailed instructions for Railway, AWS, and VPS
 
 ---
 
-## 🚀 Windows 11 Quick Start
+## 🚀 Quick Start (Windows 11)
 
-### 1. One-time PowerShell fix (Administrator)
+### 1. Enable PowerShell Scripts (One-time, run as Administrator)
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-### 2. Install
+### 2. Install Dependencies
 
 ```powershell
 .\scripts\install.ps1
 ```
 
-### 3. Setup Database + Prisma
+### 3. Initialize Database & Prisma
 
 ```powershell
 .\scripts\setup.ps1
 ```
 
-### 4. Launch Everything
+### 4. Start the Full Application
 
 ```powershell
 .\scripts\start.ps1
 ```
 
 **Access Points:**
-- Frontend: http://localhost:3000
-- Backend:  http://localhost:5000
-- PgAdmin:  http://localhost:8080
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:5000
+- **PgAdmin**: http://localhost:8080
 
 **Demo Account:**
 ```
-demo@designxpress.ai
-demo123456
+Email:    demo@designxpress.ai
+Password: demo123456
 ```
 
 ---
 
-## 🧠 AI Features
+## 📁 Project Structure
 
-| Feature             | Status                  |
-|---------------------|-------------------------|
-| Script / Story Gen  | ✅ Real OpenAI + Mock   |
-| Voiceover           | ✅ UI + Mock backend    |
-| AI Thumbnails       | ✅ UI + Mock backend    |
-| Auto Subtitles      | ✅ UI + Mock backend    |
-| Video Export        | ✅ FFmpeg foundation    |
+```
+DesignXpress Ai/
+├── frontend/                 # Next.js 15 + TypeScript + Tailwind
+│   ├── app/                  # App Router (pages, layouts)
+│   ├── components/           # Reusable UI components
+│   └── lib/                  # API client, Zustand store
+├── backend/                  # Express + TypeScript + Prisma
+│   ├── src/
+│   │   ├── routes/           # API endpoints
+│   │   ├── services/         # FFmpeg, AI, BullMQ queues
+│   │   └── middleware/       # Auth, etc.
+│   └── prisma/               # Schema + migrations + seed
+├── scripts/                  # PowerShell automation
+│   ├── install.ps1
+│   ├── setup.ps1
+│   ├── start.ps1
+│   └── deploy.ps1
+├── docker/                   # Production Docker configs
+├── docs/                     # Comprehensive documentation
+├── uploads/                  # User media (videos, images, audio)
+└── docker-compose.yml        # Development infrastructure
+```
 
-**To enable real AI:**
-Add your keys to `.env`:
+---
+
+## 🛠 Tech Stack
+
+**Frontend**
+- Next.js 15 (App Router)
+- TypeScript, Tailwind CSS, Framer Motion
+- Zustand (global state)
+- Socket.IO Client (real-time)
+
+**Backend**
+- Node.js + Express + TypeScript
+- Prisma ORM + PostgreSQL
+- Redis + BullMQ (job queue)
+- Socket.IO (real-time collaboration)
+- JWT Authentication
+
+**AI & Media**
+- OpenAI (script, story, scene generation)
+- ElevenLabs (voiceovers)
+- Stability AI (images)
+- FFmpeg (advanced video rendering)
+
+**Infrastructure**
+- Docker + Docker Compose
+- PowerShell automation for Windows
+- Production-ready deployment configs
+
+---
+
+## 📚 Documentation
+
+All documentation is organized in the [Documentation Hub](./docs/index.md).
+
+### Quick Links
+- [Getting Started](./docs/getting-started.md)
+- [Architecture Overview](./docs/architecture.md)
+- [Development Guide](./docs/development.md)
+- [Deployment Guide](./docs/deployment.md)
+- [API Reference](./docs/api-reference.md)
+- [Troubleshooting](./docs/troubleshooting.md)
+- [Contributing](./docs/contributing.md)
+- [Security](./docs/security.md)
+- [Roadmap](./docs/roadmap.md)
+
+**For a single-file version** (ideal for printing or PDF export), see:
+- [Complete User & Developer Guide](./docs/DesignXpress_AI_Complete_User_and_Developer_Guide.md)
+
+Additional specialized docs:
+- [Diagrams](./docs/diagrams.md)
+- [Workflows](./docs/workflows.md)
+- [FAQ](./docs/faq.md)
+- [Testing](./docs/testing.md)
+- [Performance](./docs/performance.md)
+
+---
+
+## ☁️ Deployment
+
+See the detailed [Deployment Guide](./docs/deployment.md) for:
+
+- Railway (recommended for quick production)
+- AWS ECS / App Runner
+- Any VPS using Docker Compose
+
+---
+
+## 🔑 Environment Variables
+
+Copy `.env.example` to `.env` and fill in your keys for full AI functionality:
+
 ```env
 OPENAI_API_KEY=sk-...
 ELEVENLABS_API_KEY=...
@@ -90,64 +197,33 @@ STABILITY_API_KEY=...
 
 ---
 
-## 📁 Key Commands
+## 🧪 Key Commands
 
 ```powershell
-.\scripts\start.ps1           # Start everything
-.\scripts\setup.ps1           # Re-run migrations + seed
-docker compose down           # Stop containers
-npm run db:studio             # Open Prisma Studio
+.\scripts\start.ps1              # Start full stack
+.\scripts\setup.ps1              # Re-initialize database
+docker compose down              # Stop all containers
+npm run db:studio                # Open Prisma Studio (database browser)
 ```
 
 ---
 
-## ☁️ Cloud Deployment
+## 📸 Branding
 
-### Railway (Recommended - Easiest)
-1. Push code to GitHub
-2. Create new project on Railway
-3. Add services: PostgreSQL, Redis, Backend, Frontend
-4. Set environment variables from `.env.production.example`
-5. Deploy
+The official DesignXpress logo is located at:
+`frontend/public/designxpress-logo.png`
 
-### AWS (Production Grade)
-- Use ECS or App Runner for containers
-- RDS for PostgreSQL
-- ElastiCache for Redis
-- CloudFront + S3 for static assets
-- Full guide coming in `/docs/deployment-aws.md`
-
-### Docker Production (Any VPS)
-```bash
-docker compose -f docker-compose.prod.yml up -d
-```
-
-See `docker-compose.prod.yml` and `scripts/deploy.ps1`.
+It is used across the landing page, auth screens, Studio, and favicon.
 
 ---
 
-## 🛠 Tech Stack
+## 🔮 Roadmap / Future Work
 
-**Frontend:** Next.js 15, TypeScript, Tailwind, Framer Motion, Zustand, Axios  
-**Backend:** Express, TypeScript, Prisma, PostgreSQL, Redis, JWT  
-**AI:** OpenAI, ElevenLabs, Stability AI (ready)  
-**Infra:** Docker, FFmpeg, PowerShell automation
-
----
-
-## 📸 Logo
-
-Official logo is located at `frontend/public/designxpress-logo.png` and used throughout the platform.
-
----
-
-## 🔮 Next Steps (Roadmap)
-
-- Drag & drop timeline + real video preview
-- Full ElevenLabs + Stability AI integration
-- User subscriptions & Stripe
-- Real-time collaboration via Socket.IO
-- Advanced FFmpeg scene stitching
+- Full real-time video preview scrubbing
+- Export queue dashboard with progress
+- Advanced usage analytics & billing
+- Team workspaces & permissions
+- Public project viewer page
 
 ---
 
