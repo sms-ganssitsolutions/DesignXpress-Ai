@@ -1,0 +1,87 @@
+version: '3.9'
+
+# Production Docker Compose for DesignXpress AI
+# Usage: docker compose -f docker-compose.prod.yml up -d
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dx-postgres-prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-designxpress}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-designxpress_ai}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dx-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: dx-redis-prod
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - dx-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: dx-backend-prod
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${DB_USER:-designxpress}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-designxpress_ai}
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - STABILITY_API_KEY=${STABILITY_API_KEY}
+      - CORS_ORIGIN=${FRONTEND_URL}
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - dx-network
+    volumes:
+      - ./uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: dx-frontend-prod
+    restart: always
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    depends_on:
+      - backend
+    networks:
+      - dx-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: dx-nginx-prod
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - dx-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  dx-network:
+    driver: bridge

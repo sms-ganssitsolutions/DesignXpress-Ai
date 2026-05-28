@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --dx-purple: #8B5CF6;
+  --dx-orange: #F97316;
+  --dx-black: #0A0A0F;
+}
+
+/* ===========================================
+   CINEMATIC FUTURISTIC DESIGN SYSTEM
+   DesignXpress AI - Apple + RunwayML + Neon
+   =========================================== */
+
+body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  background: #0A0A0F;
+  color: #F5F5F7;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+/* Neon Effects */
+.neon-purple {
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.4),
+              0 0 30px rgba(139, 92, 246, 0.2);
+}
+
+.neon-orange {
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.4),
+              0 0 30px rgba(249, 115, 22, 0.2);
+}
+
+.text-neon-purple {
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
+}
+
+.gradient-purple-orange {
+  background: linear-gradient(135deg, #8B5CF6 0%, #F97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animated Gradient Backgrounds */
+.bg-cinematic {
+  background: radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(249, 115, 22, 0.12) 0%, transparent 50%),
+              #0A0A0F;
+}
+
+/* Floating Cards */
+.floating-card {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+              box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.floating-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.6),
+              0 0 0 1px rgba(255,255,255,0.08);
+}
+
+/* Video Timeline Styles */
+.timeline {
+  background: #111117;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.timeline-ruler {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255,255,255,0.1) 0px,
+    rgba(255,255,255,0.1) 1px,
+    transparent 1px,
+    transparent 40px
+  );
+}
+
+/* Studio Editor */
+.studio-bg {
+  background: #0A0A0F;
+}
+
+.editor-panel {
+  background: #111117;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.6);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* AI Suggestion Cards */
+.ai-suggestion {
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.ai-suggestion:hover {
+  border-color: #8B5CF6;
+  background: rgba(139, 92, 246, 0.08);
+  transform: translateX(4px);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+/* Modal */
+.modal {
+  animation: modalEnter 0.2s cubic-bezier(0.23, 1.0, 0.32, 1);
+}
+
+@keyframes modalEnter {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Loading States */
+.loading-shimmer {
+  background: linear-gradient(90deg, #1A1A22 25%, #2A2A33 50%, #1A1A22 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

@@ -95,3 +95,14 @@ tmp/
 *.msp
 Desktop.ini
 $RECYCLE.BIN/
+
+# DesignXpress specific
+.env
+.env.local
+backend/.env
+frontend/.env.local
+uploads/**
+!uploads/.gitkeep
+.next/
+dist/
+*.log
