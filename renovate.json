@@ -1,0 +1,53 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommitTypeAll(deps)",
+    ":automergeMinor",
+    ":automergeDigest",
+    ":prConcurrentLimit10",
+    ":prHourlyLimit2"
+  ],
+  "timezone": "UTC",
+  "schedule": ["before 5am on Monday"],
+  "packageRules": [
+    {
+      "description": "Automerge minor and patch updates for frontend",
+      "matchFileNames": ["frontend/package.json"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "Automerge minor and patch updates for backend",
+      "matchFileNames": ["backend/package.json"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "Group Next.js ecosystem updates",
+      "matchFileNames": ["frontend/package.json"],
+      "groupName": "next.js",
+      "matchPackagePatterns": ["^next", "^react", "^@types/react"],
+      "automerge": true
+    },
+    {
+      "description": "Group Prisma updates",
+      "matchFileNames": ["backend/package.json"],
+      "groupName": "prisma",
+      "matchPackagePatterns": ["^@prisma", "^prisma"],
+      "automerge": true
+    },
+    {
+      "description": "Do not automerge major version bumps",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ],
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 2,
+  "commitMessagePrefix": "deps:",
+  "labels": ["dependencies"],
+  "assignees": [],
+  "reviewers": []
+}

@@ -51,7 +51,7 @@ A premium, cinematic AI-powered video storytelling platform. Built as a full-sta
 - **Windows-First Automation** — `install.ps1`, `setup.ps1`, `start.ps1`, `deploy.ps1`
 - **Full Docker Support** — Development and production compose files
 - **Production Deployment Guide** — Detailed instructions for Railway, AWS, and VPS
-- **Advanced GitHub Workflows** — Dependabot, CodeQL, Merge Queue support, automated releases, security scanning (Trivy), Docker publishing to GHCR, reusable workflows, and PR auto-labeling
+- **Advanced GitHub Workflows** — Dependabot + Auto-Merge, Renovate (alternative), CodeQL, Merge Queue, automated releases, Trivy security scanning (Docker + fs), Stale bot, reusable workflows, and PR auto-labeling
 - **Configurable Branch Protection** — Ready-to-apply Repository Rulesets via one-command scripts (highly recommended)
 
 ---

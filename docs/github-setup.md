@@ -144,11 +144,20 @@ This template ships with a rich set of GitHub-native DevOps features:
 
 **Automation**
 - **Dependabot** — Weekly dependency updates for npm and GitHub Actions
+- **Dependabot Auto-Merge** — Automatically merges minor and patch updates
+- **Renovate** (`renovate.json`) — Powerful alternative to Dependabot with advanced grouping and scheduling
+- **Stale Bot** — Automatically closes stale issues and PRs
 - **PR Auto-Labeler** — Automatically labels PRs based on changed paths
+
+**Security & Scanning**
+- **CodeQL** — Advanced semantic code analysis
+- **Trivy Docker Security Scanning** — Dedicated workflow for container vulnerability scanning (filesystem + image)
 
 **Reusable & Advanced**
 - Example reusable workflow (`reusable-ci.yml`)
 - Configurable branch protection via rulesets (see below)
+- Merge Queue support
+- Automated releases on version tags
 
 You can find all workflows in the `.github/workflows/` directory.
 

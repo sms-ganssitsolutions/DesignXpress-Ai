@@ -51,11 +51,14 @@ This repository is designed to be used as a **GitHub Template Repository**. When
    - Enabling security features (Dependabot, CodeQL, Secret scanning)
 
    The template ships with a full modern GitHub DevOps stack:
-   - Dependabot (dependency updates)
+   - Dependabot + Auto-Merge (minor/patch updates)
+   - Renovate (`renovate.json`) as a powerful alternative to Dependabot
    - CodeQL (security scanning)
    - Merge Queue support
    - Automated Releases on version tags
    - Docker publishing to GHCR
+   - Trivy container security scanning (dedicated workflow)
+   - Stale bot for automatic cleanup
    - Configurable Repository Rulesets for branch protection
    - PR auto-labeling
 
