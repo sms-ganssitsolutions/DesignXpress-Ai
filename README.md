@@ -51,6 +51,7 @@ A premium, cinematic AI-powered video storytelling platform. Built as a full-sta
 - **Windows-First Automation** — `install.ps1`, `setup.ps1`, `start.ps1`, `deploy.ps1`
 - **Full Docker Support** — Development and production compose files
 - **Production Deployment Guide** — Detailed instructions for Railway, AWS, and VPS
+- **Advanced GitHub Workflows** — Dependabot, CodeQL security scanning, automated releases, Trivy vulnerability scanning, and Docker publishing to GHCR on version tags
 
 ---
 
@@ -145,6 +146,27 @@ DesignXpress Ai/
 - Docker + Docker Compose
 - PowerShell automation for Windows
 - Production-ready deployment configs
+
+---
+
+## 🚀 Using This as a Template
+
+[![Use this template](https://img.shields.io/badge/Use%20this%20template-000000?style=for-the-badge&logo=github)](https://github.com/new?template_owner=sms-ganssitsolutions&template_name=DesignXpress-Ai)
+
+This repository is set up as a **GitHub Template Repository**.
+
+Click the badge above or **"Use this template"** → GitHub will create a new repository with the complete structure.
+
+After generating:
+
+1. Clone the new repo
+2. Run the initializer:
+   - **Windows**: `.\scripts\init-from-template.ps1`
+   - **macOS/Linux**: `./scripts/init-from-template.sh`
+3. Follow the detailed guide in [TEMPLATE.md](./TEMPLATE.md)
+4. **Strongly recommended**: Configure GitHub settings using the guide in [docs/github-setup.md](./docs/github-setup.md) (branch protection, CI, security features, etc.)
+
+This gives you a powerful head start for building your own AI creative platform.
 
 ---
 

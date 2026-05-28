@@ -1,0 +1,24 @@
+# CODEOWNERS
+# This file defines individuals or teams that are responsible for code in this repository.
+# Learn more: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repo
+*       @your-username
+
+# Frontend
+/frontend/ @your-username
+
+# Backend
+/backend/ @your-username
+
+# Documentation
+/docs/ @your-username
+
+# Scripts and infrastructure
+/scripts/ @your-username
+docker-compose*.yml @your-username
+Dockerfile* @your-username
+
+# Example: You can assign different people/teams to different areas
+# /frontend/ @frontend-team
+# /backend/ @backend-team

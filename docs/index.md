@@ -27,6 +27,7 @@ This hub provides easy navigation to all documentation.
 - [FFmpeg Rendering](ffmpeg-rendering.md) — Advanced multi-track video rendering system
 - [Real-time Collaboration](collaboration.md) — Socket.IO features (cursors, chat, sync)
 - [Deployment Guide](deployment.md) — Production deployment (Railway, AWS, Docker)
+- [GitHub Setup](github-setup.md) — Branch protection, CODEOWNERS, and CI/CD configuration
 - [Diagrams](diagrams.md) — All Mermaid architecture and flow diagrams
 - [Workflows](workflows.md) — Common user and developer workflows
 - [FAQ](faq.md) — Frequently asked questions
@@ -49,6 +50,11 @@ This hub provides easy navigation to all documentation.
 **New Users / Creators**
 - Start with [Getting Started](getting-started.md)
 - Then explore the [Studio features](../README.md#professional-ai-video-studio)
+
+**People Using This as a Template**
+- Read [TEMPLATE.md](../TEMPLATE.md) first
+- Run the initialization script after generating a new repository from this template
+- Follow [GitHub Setup Guide](github-setup.md) to configure branch protection, CI, and security features properly
 
 **Developers**
 - [Architecture Overview](architecture.md)
